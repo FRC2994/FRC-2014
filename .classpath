@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/sunspotfrcsdk-2014/lib/networktables-crio.jar"/>
+	<classpathentry kind="lib" path="/sunspotfrcsdk-2014/lib/squawk.jar"/>
+	<classpathentry kind="lib" path="/sunspotfrcsdk-2014/lib/wpilibj.jar" sourcepath="/sunspotfrcsdk-2014/lib/wpilibj.src.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/FRC-2014-sim"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
