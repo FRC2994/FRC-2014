@@ -334,7 +334,7 @@ public class AstechzRobot extends SimpleRobot {
 		 */ 
 		Subsystems.robotDrive.setSafetyEnabled(false);
 
-		Timer clock = null;
+		Timer clock = new Timer();
 		int sanity = 0;
 		int bigSanity = 0;
 
@@ -361,7 +361,7 @@ public class AstechzRobot extends SimpleRobot {
 			if (sanity >= 100) {
 				bigSanity++;
 				sanity = 0;
-				Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, ""+ bigSanity);
+				Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, ""+ bigSanity);
 			}
 			Subsystems.gamepad.update();
 			Subsystems.leftStick.update();
