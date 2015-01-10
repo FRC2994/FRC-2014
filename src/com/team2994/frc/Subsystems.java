@@ -58,7 +58,7 @@ public class Subsystems {
 	
 	// Digital IOs
 	public static final EDigitalInput winchSwitch = new EDigitalInput(Constants.WINCH_SWITCH);
-	public static final Encoder leftDriveEncoder = new Encoder(Constants.LEFT_ENCODER_A, Constants.LEFT_ENCODER_B);
+	public static Encoder leftDriveEncoder;
 	public static final Encoder rightDriveEncoder = new Encoder(Constants.RIGHT_ENCODER_A, Constants.RIGHT_ENCODER_B);
 	
 	// Misc
@@ -72,41 +72,51 @@ public class Subsystems {
 	// (note that analog channels are numbered 1->8 in the WPILib API and on the module
 	// The last channel is always used for batt voltage so we do not have 
 	// access to it (hence our max channel is 7 not 8)
-	public static final AnalogChannel analog1 = new AnalogChannel(1);
-	public static final AnalogChannel analog2 = new AnalogChannel(2);
-	public static final AnalogChannel analog3 = new AnalogChannel(3);
-	public static final AnalogChannel analog4 = new AnalogChannel(4);
-	public static final AnalogChannel analog5 = new AnalogChannel(5);
-	public static final AnalogChannel analog6 = new AnalogChannel(6);
-	public static final AnalogChannel analog7 = new AnalogChannel(7);
+	public static AnalogChannel analog1;
+	public static AnalogChannel analog2;
+	public static AnalogChannel analog3;
+	public static AnalogChannel analog4;
+	public static AnalogChannel analog5;
+	public static AnalogChannel analog6;
+	public static AnalogChannel analog7;
 	// Solenoids
 	// (note that solenoid channels are numbered 1->8)
-	public static final Solenoid solenoid7 = new Solenoid(7);
-	public static final Solenoid solenoid8 = new Solenoid(8);
-	// Relays
-	public static final Relay relay1 = new Relay(1);
-	public static final Relay relay2 = new Relay(2);
-	public static final Relay relay3 = new Relay(3);
-	public static final Relay relay4 = new Relay(4);
-	public static final Relay relay5 = new Relay(5);
-	public static final Relay relay6 = new Relay(6);
-	public static final Relay relay7 = new Relay(7);
-	public static final Relay relay8 = new Relay(8);
+	public static Solenoid solenoid7;
+	public static Solenoid solenoid8;
+	// Relays - Relay 2 is used for the solenoid spike
+	public static Relay relay1;
+	public static Relay relay3;
+	public static Relay relay4;
+	public static Relay relay5;
+	public static Relay relay6;
+	public static Relay relay7;
+	public static Relay relay8;
 	
 	public static void initRobot() {
-		// Add all subsystems to a 100Hz Looper
-/*
-		subsystemUpdater100Hz.addLoopable(drivebase);
-		subsystemUpdater100Hz.addLoopable(frontIntake);
-		subsystemUpdater100Hz.addLoopable(rearIntake);
-		subsystemUpdater100Hz.addLoopable(navigator);
-		subsystemUpdater100Hz.addLoopable(pinniped);
-		subsystemUpdater100Hz.addLoopable(shooter);
+		// Add anything here that needs to be initialized during robot.init();
+		if (ROBOT_TYPE == Constants.PLY_BOY) {
+			leftDriveEncoder = new Encoder(Constants.LEFT_ENCODER_A_PLYBOY, Constants.LEFT_ENCODER_B_PLYBOY);
+			analog1 = new AnalogChannel(1);
+			analog2 = new AnalogChannel(2);
+			analog3 = new AnalogChannel(3);
+			analog4 = new AnalogChannel(4);
+			analog5 = new AnalogChannel(5);
+			analog6 = new AnalogChannel(6);
+			analog7 = new AnalogChannel(7);
+			// Solenoids
+			// (note that solenoid channels are numbered 1->8)
+			solenoid7 = new Solenoid(7);
+			solenoid8 = new Solenoid(8);	
 
-		hotGoalThread.start();
-		    
-		compressor.start();
-		shooter.useController(shooterController);
-*/
+			relay1 = new Relay(1);
+			relay3 = new Relay(3);
+			relay4 = new Relay(4);
+			relay5 = new Relay(5);
+			relay6 = new Relay(6);
+			relay7 = new Relay(7);
+			relay8 = new Relay(8);
+		} else {
+			leftDriveEncoder = new Encoder(Constants.LEFT_ENCODER_A, Constants.LEFT_ENCODER_B);
+		}
 	}
 }

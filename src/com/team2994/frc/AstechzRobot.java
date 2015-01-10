@@ -13,7 +13,6 @@ import com.team2994.frc.test.SolenoidMenu;
 import com.team2994.frc.test.TopMenu;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,13 +20,7 @@ import edu.wpi.first.wpilibj.Timer;
 /*
  * Main Class for the Robot!!!!!!
  */
-public class AstechzRobot extends SimpleRobot {
-	private DriverStation driverStation;
-	
-	public AstechzRobot(DriverStation driverStation) {
-		this.driverStation = driverStation;
-	}
-	
+public class AstechzRobot extends SimpleRobot {	
 	// m_ds already points to the DriverStation from the RobotBase class;
 	
 	boolean loaded;
@@ -37,7 +30,7 @@ public class AstechzRobot extends SimpleRobot {
 	public void robotInit() {
 		// Print an I'M ALIVE message before anything else. NOTHING ABOVE THIS LINE.
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, Constants.ROBOT_TYPES[Subsystems.ROBOT_TYPE]);
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, Constants.ROBOT_TYPES[Subsystems.ROBOT_TYPE]);
 		Subsystems.lcd.updateLCD();
 
 		// initialize the subsystems
@@ -47,14 +40,14 @@ public class AstechzRobot extends SimpleRobot {
 		Subsystems.robotDrive.setExpiration(Constants.LOOP_PERIOD * 1.5);
 		Subsystems.leftDriveEncoder.setReverseDirection(true);
 	}
-	
+		
 	// CheckLoad
 	//	* Checks if the winch switch has been pressed.
 	//		----> If yes, makes sure the state of the motors and variables is correct.
 	//	* Should be called every tick of an operator control loop to ensure that
 	//	  the motor is shut off as soon as possible.
 	private boolean checkLoad() {
-		if (!driverStation.isEnabled()) {
+		if (!m_ds.isEnabled()) {
 			Subsystems.rightWinch.set(0.0);
 			Subsystems.leftWinch.set(0.0);
 			loaded = false;
@@ -106,7 +99,7 @@ public class AstechzRobot extends SimpleRobot {
 			Subsystems.rightWinch.set(Constants.WINCH_FWD);
 			Subsystems.leftWinch.set(-Constants.WINCH_FWD);
 			for (int i = 0; i < 37; i++) {
-				if (driverStation.isOperatorControl()) {
+				if (m_ds.isOperatorControl()) {
 					Subsystems.robotDrive.arcadeDrive(Subsystems.rightStick.getY(),-Subsystems.rightStick.getX(), true);
 				}
 				Timer.delay(0.01);
@@ -126,15 +119,15 @@ public class AstechzRobot extends SimpleRobot {
 		
 		// The encoder.Reset() method seems not to set Get() values back to zero,
 		// so we use a variable to capture the initial value.
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, "initial=" + Subsystems.leftDriveEncoder.get());
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, "initial=" + Subsystems.leftDriveEncoder.get());
 		Subsystems.lcd.updateLCD();
 
 		// Start moving the robot
 		Subsystems.robotDrive.drive(speed, 0.0);
 		
-		while ((driverStation.isAutonomous()) && (reading <= dist)) {
-			reading = Math.abs(Subsystems.leftDriveEncoder.get());				
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, "reading=" + reading);
+		while ((m_ds.isAutonomous()) && (reading <= dist)) {
+			reading = Math.abs(Subsystems.leftDriveEncoder.get());
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, "reading=" + reading);
 			Subsystems.lcd.updateLCD();
 		}
 
@@ -143,67 +136,71 @@ public class AstechzRobot extends SimpleRobot {
 		Subsystems.leftDriveEncoder.stop();
 	}
 	
-	// Test Autonomous
-	private void TestAutonomous() {
-		Subsystems.robotDrive.setSafetyEnabled(false);
-
-		// STEP 1: Set all of the states.
-		// SAFETY AND SANITY - SET ALL TO ZERO
-		loaded = Subsystems.winchSwitch.get();
-		loading = false;
-		Subsystems.intake.set(0.0);
-		Subsystems.rightWinch.set(0.0);
-		Subsystems.leftWinch.set(0.0);
-
-		// STEP 2: Move forward to optimum shooting position
-		drive(-Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
-
-		// STEP 3: Drop the arm for a clean shot
-		Subsystems.arm.set(DoubleSolenoid.Value.kForward);
-		Timer.delay(1.0); // Ken
-
-		// STEP 4: Launch the catapult
-		launchCatapult();
-
-		Timer.delay(1.0); // Ken
-
-		if (driverStation.getDigitalIn(0)) {
-			// STEP 5: Start the intake motor and backup to our origin position to pick up another ball
-			initiateLoad();
-			Subsystems.intake.set(-Constants.INTAKE_COLLECT);
-			while (checkLoad()) {
-				drive(Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
-			}
-			Timer.delay(1.0);
-
-			// STEP 6: Shut off the intake, bring up the arm and move to shooting position
-			Subsystems.intake.set(0.0);
-			Subsystems.arm.set(DoubleSolenoid.Value.kReverse);
-			Timer.delay(1.0);
-			drive(-Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
-
-			// Step 7: drop the arm for a clean shot and shoot
-			Subsystems.arm.set(DoubleSolenoid.Value.kForward);
-			
-			// UNTESTED KICKED OFF FIELD
-			Timer.delay(1.0); // Ken
-			launchCatapult();
-		}
-
-		// Get us fully into the zone for 5 points
-		drive(-Constants.AUTO_DRIVE_SPEED, Constants.INTO_ZONE_DIST - Constants.SHOT_POSN_DIST);
-
-		// SAFETY AND SANITY - SET ALL TO ZERO
-		Subsystems.intake.set(0.0);
-		Subsystems.rightWinch.set(0.0);
-		Subsystems.leftWinch.set(0.0);
-	}
+//	// Test Autonomous
+//	private void TestAutonomous() {
+//		Subsystems.robotDrive.setSafetyEnabled(false);
+//
+//		// STEP 1: Set all of the states.
+//		// SAFETY AND SANITY - SET ALL TO ZERO
+//		loaded = Subsystems.winchSwitch.get();
+//		loading = false;
+//		Subsystems.intake.set(0.0);
+//		Subsystems.rightWinch.set(0.0);
+//		Subsystems.leftWinch.set(0.0);
+//
+//		// STEP 2: Move forward to optimum shooting position
+//		drive(-Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
+//
+//		// STEP 3: Drop the arm for a clean shot
+//		Subsystems.arm.set(DoubleSolenoid.Value.kForward);
+//		Timer.delay(1.0); // Ken
+//
+//		// STEP 4: Launch the catapult
+//		launchCatapult();
+//
+//		Timer.delay(1.0); // Ken
+//
+//		if (m_ds.getDigitalIn(0)) {
+//			// STEP 5: Start the intake motor and backup to our origin position to pick up another ball
+//			initiateLoad();
+//			Subsystems.intake.set(-Constants.INTAKE_COLLECT);
+//			while (checkLoad()) {
+//				drive(Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
+//			}
+//			Timer.delay(1.0);
+//
+//			// STEP 6: Shut off the intake, bring up the arm and move to shooting position
+//			Subsystems.intake.set(0.0);
+//			Subsystems.arm.set(DoubleSolenoid.Value.kReverse);
+//			Timer.delay(1.0);
+//			drive(-Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
+//
+//			// Step 7: drop the arm for a clean shot and shoot
+//			Subsystems.arm.set(DoubleSolenoid.Value.kForward);
+//			
+//			// UNTESTED KICKED OFF FIELD
+//			Timer.delay(1.0); // Ken
+//			launchCatapult();
+//		}
+//
+//		// Get us fully into the zone for 5 points
+//		drive(-Constants.AUTO_DRIVE_SPEED, Constants.INTO_ZONE_DIST - Constants.SHOT_POSN_DIST);
+//
+//		// SAFETY AND SANITY - SET ALL TO ZERO
+//		Subsystems.intake.set(0.0);
+//		Subsystems.rightWinch.set(0.0);
+//		Subsystems.leftWinch.set(0.0);
+//	}
 	
 	// Real Autonomous
 	//	* Code to be run autonomously for the first ten (10) seconds of the match.
 	//	* Launch catapult
 	//	* Drive robot forward ENCODER_DIST ticks.
 	public void autonomous() {
+		Subsystems.lcd.clear();
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Autonomous Start");
+		Subsystems.lcd.updateLCD();
+
 		Subsystems.robotDrive.setSafetyEnabled(false);
 		
 		// STEP 1: Set all of the states.
@@ -216,15 +213,21 @@ public class AstechzRobot extends SimpleRobot {
 		
 		// STEP 2: Move forward to optimum shooting position
 		drive(-Constants.AUTO_DRIVE_SPEED, Constants.SHOT_POSN_DIST);
-		
+
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, "Drop Arm");
+		Subsystems.lcd.updateLCD();
 		// STEP 3: Drop the arm for a clean shot
 		Subsystems.arm.set(DoubleSolenoid.Value.kForward);
 		Timer.delay(1.0); // Ken
-		
+
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, "Launch Catapult");
+		Subsystems.lcd.updateLCD();
 		// STEP 4: Launch the catapult
 		launchCatapult();
 		Timer.delay(1.0); // Ken
-		
+
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, "Drive Again");
+		Subsystems.lcd.updateLCD();
 		// Get us fully into the zone for 5 points
 		drive(-Constants.AUTO_DRIVE_SPEED, Constants.INTO_ZONE_DIST - Constants.SHOT_POSN_DIST);
 
@@ -232,6 +235,10 @@ public class AstechzRobot extends SimpleRobot {
 		Subsystems.intake.set(0.0);
 		Subsystems.rightWinch.set(0.0);
 		Subsystems.leftWinch.set(0.0);
+		
+		Subsystems.lcd.clear();
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Autonomous End");
+		Subsystems.lcd.updateLCD();
 	}
 	
 	// HandleDriverInputs
@@ -293,19 +300,19 @@ public class AstechzRobot extends SimpleRobot {
 		}
 	}
 	
-	// HandleEject
-	//	* Handle eject piston.
-	private void handleEject() {
-		if (Subsystems.gamepad.getEvent(Constants.BUTTON_PASS) == ButtonEntry.EVENT_CLOSED) {
-			Subsystems.ejectTimer.start();
-			Subsystems.eject.set(DoubleSolenoid.Value.kForward);
-		}
-		if (Subsystems.ejectTimer.get() > Constants.EJECT_WAIT) {
-			Subsystems.ejectTimer.stop();
-			Subsystems.ejectTimer.reset();
-			Subsystems.eject.set(DoubleSolenoid.Value.kReverse);
-		}
-	}
+//	// HandleEject
+//	//	* Handle eject piston.
+//	private void handleEject() {
+//		if (Subsystems.gamepad.getEvent(Constants.BUTTON_PASS) == ButtonEntry.EVENT_CLOSED) {
+//			Subsystems.ejectTimer.start();
+//			Subsystems.eject.set(DoubleSolenoid.Value.kForward);
+//		}
+//		if (Subsystems.ejectTimer.get() > Constants.EJECT_WAIT) {
+//			Subsystems.ejectTimer.stop();
+//			Subsystems.ejectTimer.reset();
+//			Subsystems.eject.set(DoubleSolenoid.Value.kReverse);
+//		}
+//	}
 
 	// RegisterButtons
 	//	* Register all the buttons required
@@ -327,6 +334,9 @@ public class AstechzRobot extends SimpleRobot {
 		Subsystems.rightWinch.set(0.0);
 		Subsystems.leftWinch.set(0.0);
 
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "DEBUG: OperatorControl");
+		Subsystems.lcd.updateLCD();
+
 		Subsystems.arm.set(DoubleSolenoid.Value.kReverse);
 
 		/* TODO: Investigate. At least year's (GTR East) competition, we reached the conclusion that disabling this was 
@@ -334,7 +344,6 @@ public class AstechzRobot extends SimpleRobot {
 		 */ 
 		Subsystems.robotDrive.setSafetyEnabled(false);
 
-		Timer clock = new Timer();
 		int sanity = 0;
 		int bigSanity = 0;
 
@@ -347,21 +356,24 @@ public class AstechzRobot extends SimpleRobot {
 
 		Subsystems.compressor.start();
 
-		while (driverStation.isOperatorControl() && driverStation.isEnabled()) {
-			clock.start();
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, "DEBUG: OperatorControl2");
+		Subsystems.lcd.updateLCD();
+
+		while (m_ds.isOperatorControl() && m_ds.isEnabled()) {
 
 			handleDriverInputs();
 			handleShooter();
 			handleArm();
 
-			while (clock.get() <= Constants.LOOP_PERIOD) { // add an IsEnabled???
-				clock.reset();
-			}
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, "DEBUG: OperatorControl3");
+			Subsystems.lcd.updateLCD();
+			
+			Timer.delay(Constants.LOOP_PERIOD);
 			sanity++;
 			if (sanity >= 100) {
 				bigSanity++;
 				sanity = 0;
-				Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, ""+ bigSanity);
+				Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, ""+ bigSanity);
 			}
 			Subsystems.gamepad.update();
 			Subsystems.leftStick.update();
@@ -390,7 +402,7 @@ public class AstechzRobot extends SimpleRobot {
 
 		int start = Subsystems.leftDriveEncoder.get();
 
-		while (driverStation.isTest()) {
+		while (m_ds.isTest()) {
 			if (Subsystems.rightStick.getRawButton(7)) {
 				Subsystems.robotDrive.arcadeDrive(Subsystems.rightStick.getY(), -Subsystems.rightStick.getX(), true);
 			} else {
@@ -401,7 +413,7 @@ public class AstechzRobot extends SimpleRobot {
 				start = Subsystems.leftDriveEncoder.get();
 			}
 
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, "lde: " + (Subsystems.leftDriveEncoder.get() - start));
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, "lde: " + (Subsystems.leftDriveEncoder.get() - start));
 			Subsystems.lcd.updateLCD();
 
 			Subsystems.gamepad.update();
@@ -456,7 +468,7 @@ public class AstechzRobot extends SimpleRobot {
 		// that can be removed when things get more stable)
 		int sanity = 0;
 
-		while (driverStation.isTest()) {
+		while (m_ds.isTest()) {
 			// The dpad "up" button is used to move the menu pointer up one line
 			// on the LCD display
 			if (Subsystems.gamepad.getDPadEvent(Gamepad.DPAD_DIRECTION_UP) == ButtonEntry.EVENT_CLOSED) {
@@ -515,7 +527,7 @@ public class AstechzRobot extends SimpleRobot {
 			menus[currentMenu].updateDisplay();
 
 			// Dump the sanity time value to the LCD
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser6, 0, "Sanity: " + sanity);
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser6, 1, "Sanity: " + sanity);
 			Subsystems.lcd.updateLCD();
 
 			sanity++;

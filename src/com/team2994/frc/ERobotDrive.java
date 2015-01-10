@@ -1,13 +1,14 @@
 package com.team2994.frc;
 
-import com.sun.squawk.util.Assert;
 import com.team2994.frc.util.FastMath;
 
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.MotorSafetyHelper;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.can.CANNotInitializedException;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.communication.UsageReporting;
 
@@ -253,7 +254,7 @@ public class ERobotDrive implements MotorSafety {
 	 * @throws CANTimeoutException 
 	 */
 	private void setLeftRightMotorOutputs(double leftOutput, double rightOutput) {
-		Assert.always(m_rearLeftMotor != null && m_rearRightMotor != null);
+//		Assert.always(m_rearLeftMotor != null && m_rearRightMotor != null);
 
 		byte syncGroup = (byte) 0x80;
 
@@ -273,10 +274,13 @@ public class ERobotDrive implements MotorSafety {
 
 		try {
 			CANJaguar.updateSyncGroup(syncGroup);
+        } catch (CANNotInitializedException e) {
+    		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, "CANNotInitializedException");
+    		Subsystems.lcd.updateLCD();
 		} catch (CANTimeoutException e) {
-			e.printStackTrace();
+    		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, "CANTimeoutException");
+    		Subsystems.lcd.updateLCD();
 		}
-
 		m_safetyHelper.feed();
 	}
 	

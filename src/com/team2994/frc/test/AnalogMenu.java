@@ -65,9 +65,9 @@ public class AnalogMenu extends BaseMenu {
 
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Analog");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Channel: " + currentChannelNum_m + 1 + " " + channel_mp[currentChannelNum_m].getVoltage());
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Analog");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Channel: " + currentChannelNum_m + 1 + " " + channel_mp[currentChannelNum_m].getVoltage());
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

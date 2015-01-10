@@ -43,7 +43,7 @@ public class PWMMenu extends BaseMenu {
 		currentChannelNumB_m = 1;
 		enabled_m = ENABLED_NEITHER;
 		
-		for (int i = MIN_PWM_CHANNEL; i <= MAX_PWM_CHANNEL; i++) {
+		for (int i = MIN_PWM_CHANNEL; i < MAX_PWM_CHANNEL; i++) {
 			channel_mp[i].setExpiration(0.2);
 			activeChannels[i] = false;
 		}
@@ -167,11 +167,11 @@ public class PWMMenu extends BaseMenu {
 		int chanB = currentChannelNumB_m + 1;
 
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "PWM");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Channel A: "+ chanA  + " " + channel_mp[currentChannelNumA_m].get());
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Channel B: "+ chanB  + " " + channel_mp[currentChannelNumB_m].get());
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Enabled: " + enabledStrings[enabled_m]);
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "PWM");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Channel A: "+ chanA  + " " + channel_mp[currentChannelNumA_m].get());
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Channel B: "+ chanB  + " " + channel_mp[currentChannelNumB_m].get());
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Enabled: " + enabledStrings[enabled_m]);
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

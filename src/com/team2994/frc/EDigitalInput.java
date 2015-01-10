@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class EDigitalInput extends DigitalInput {
 
-	private ButtonEntry buttonEntry;
+	private ButtonEntry buttonEntry = new ButtonEntry();
 	
 	public EDigitalInput(int channel) {
 		super(channel);

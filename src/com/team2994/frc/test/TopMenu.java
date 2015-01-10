@@ -38,11 +38,11 @@ public class TopMenu extends BaseMenu {
 	}
 
 	public void updateDisplay() {
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Top");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Analog");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Digital");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Solenoid");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 0, " Reset");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Top");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Analog");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Digital");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Solenoid");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 1, " Reset");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

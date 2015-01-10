@@ -95,14 +95,14 @@ public class DigitalIOEncoderMenu extends BaseMenu {
 
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Digitial IO encoder");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Channel Pair: " + currentChannelNum1_m + " " + currentChannelNum2_m);
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Digitial IO encoder");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Channel Pair: " + currentChannelNum1_m + " " + currentChannelNum2_m);
 		if (encoder_mp != null) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " En: Yes Cnt: " + encoder_mp.get());			
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " En: Yes Cnt: " + encoder_mp.get());			
 		} else {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " En: No Cnt: --");
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " En: No Cnt: --");
 		}
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}	

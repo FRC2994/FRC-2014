@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.Relay;
 public class RelayMenu extends BaseMenu {
 
 	public static final int MIN_RELAY_CHANNEL = 0;
-	public static final int MAX_RELAY_CHANNEL = 7; 
+	public static final int MAX_RELAY_CHANNEL = 6; // 7 - 1 
 
 	private int currentChannelNum_m = 0;
 	private Relay channel_mp[] = {
-		Subsystems.relay1, Subsystems.relay2, Subsystems.relay3,
+		Subsystems.relay1, Subsystems.relay3,
 		Subsystems.relay4, Subsystems.relay5, Subsystems.relay6,
 		Subsystems.relay7, Subsystems.relay8
 	};
@@ -101,18 +101,18 @@ public class RelayMenu extends BaseMenu {
 
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Relay");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Channel: " + currentChannelNum_m + 1);
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Relay");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Channel: " + currentChannelNum_m + 1);
 		if (channel_mp[currentChannelNum_m].get() == Relay.Value.kOff) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Set: Off");
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Set: Off");
 		} else if (channel_mp[currentChannelNum_m].get() == Relay.Value.kOn) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Set: On");
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Set: On");
 		} else if (channel_mp[currentChannelNum_m].get() == Relay.Value.kForward) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Set: Forward");
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Set: Forward");
 		} else if (channel_mp[currentChannelNum_m].get() == Relay.Value.kReverse) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Set: Reverse");
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Set: Reverse");
 		}
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Backy");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Backy");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

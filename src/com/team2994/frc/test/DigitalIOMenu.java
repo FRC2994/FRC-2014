@@ -44,11 +44,11 @@ public class DigitalIOMenu extends BaseMenu {
 
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Digital I/O");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " State");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Clock");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Encoder");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Digital I/O");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " State");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Clock");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Encoder");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 1, " Back");
 		StringBuffer strBuf = new StringBuffer();
 		for (int i = 0; i < DigitalIO.FREE_DIO_CHANNELS.length; i++) {
 			strBuf.append(Integer.toString(DigitalIO.FREE_DIO_CHANNELS[i]));
@@ -56,7 +56,7 @@ public class DigitalIOMenu extends BaseMenu {
 				strBuf.append(",");
 			}
 		}
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser6, 0, "[" + strBuf.toString() + "]");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser6, 1, "[" + strBuf.toString() + "]");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

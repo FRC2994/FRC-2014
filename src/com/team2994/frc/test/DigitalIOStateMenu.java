@@ -87,14 +87,14 @@ public class DigitalIOStateMenu extends BaseMenu {
 
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Digital IO State");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Channel " + currentChannelValue_m);
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Digital IO State");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Channel " + currentChannelValue_m);
 		if (DigitalIO.isInput(currentChannelNum_m)) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Direction: IN");	
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Direction: IN");	
 		} else {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Direction: OUT");
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Direction: OUT");
 		}
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}	

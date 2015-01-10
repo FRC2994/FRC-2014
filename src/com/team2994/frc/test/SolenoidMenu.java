@@ -20,9 +20,11 @@ public class SolenoidMenu extends BaseMenu {
 	public static final int SINGLE_SOLENOID_PAIR_START = 3;
 	private int currentChannelPair;
 	private DoubleSolenoid doubleSolenoid[] = {
-			Subsystems.shifters, Subsystems.arm, Subsystems.eject};
+			Subsystems.shifters, Subsystems.arm, Subsystems.eject
+			};
 	private Solenoid singleSolenoid[] = {
-			Subsystems.solenoid7, Subsystems.solenoid8};
+			Subsystems.solenoid7, Subsystems.solenoid8
+			};
 
 	public SolenoidMenu() {
 		super(2,4);
@@ -109,29 +111,29 @@ public class SolenoidMenu extends BaseMenu {
 	
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, " Solenoid Pair");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " Channel A: " + (currentChannelPair*2));
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Channel B: " + ((currentChannelPair*2) + 1));
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, " Solenoid Pair");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " Channel A: " + (currentChannelPair*2));
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Channel B: " + ((currentChannelPair*2) + 1));
 		if (currentChannelPair >= SINGLE_SOLENOID_PAIR_START) {
-			Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Set Pair: " + 
+			Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Set Pair: " + 
 					(singleSolenoid[currentChannelPair - SINGLE_SOLENOID_PAIR_START].get() ? "ON" : "OFF"));
 		} else {
 			switch (doubleSolenoid[currentChannelPair].get().value) {
 				case DoubleSolenoid.Value.kOff_val:
-					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Set: Off");
+					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Set: Off");
 					break;
 				case DoubleSolenoid.Value.kForward_val:
-					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Set: Forward");
+					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Set: Forward");
 					break;
 				case DoubleSolenoid.Value.kReverse_val:
-					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Set: Reverse");
+					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Set: Reverse");
 					break;
 				default:
-					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Set: Error");
+					Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Set: Error");
 					break;
 			}
 		}
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

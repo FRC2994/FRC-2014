@@ -42,11 +42,11 @@ public class DigitalMenu extends BaseMenu {
 	}
 	
 	public void updateDisplay() {
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Digital");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " I/O");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " PWM");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Relay");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Digital");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " I/O");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " PWM");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Relay");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}

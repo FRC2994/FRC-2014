@@ -102,11 +102,13 @@ public class EGamepad extends Gamepad {
 	}
 
 	private void initialize() {
+		m_buttonTable[0] = new ButtonEntry();
 		m_buttonTable[0].setEnabled(false);
 		m_buttonTable[0].setEvent(ButtonEntry.EVENT_ERR);
 		m_buttonTable[0].setState(ButtonEntry.STATE_ERR);
 		
 		for (int i=1; i<=EGAMEPAD_NUM_BUTTONS; i++)	{
+			m_buttonTable[i] = new ButtonEntry();
 			m_buttonTable[i].setEnabled(false);
 			m_buttonTable[i].setEvent(ButtonEntry.EVENT_ERR);
 			m_buttonTable[i].setState(getRawButton(i) ? ButtonEntry.EVENT_CLOSED : ButtonEntry.EVENT_OPENED);
@@ -118,6 +120,7 @@ public class EGamepad extends Gamepad {
 		// is messing with the DPad at init time, kCentre)
 		
 		for (int i=Gamepad.DPAD_DIRECTION_CENTER; i<=Gamepad.DPAD_DIRECTION_UP_RIGHT; i++) {
+			m_dpadTable[i] = new ButtonEntry();
 			m_dpadTable[i].setEnabled(false); // We never check this
 			m_dpadTable[i].setEvent(ButtonEntry.EVENT_NONE);
 			m_dpadTable[i].setState(ButtonEntry.STATE_OPEN);

@@ -96,11 +96,11 @@ public class DigitalIOClockMenu extends BaseMenu {
 
 	public void updateDisplay() {
 		Subsystems.lcd.clear();
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 0, "Digital I/O");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 0, " State");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 0, " Clock");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 0, " Encoder");
-		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 0, " Back");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser1, 1, "Digital I/O");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser2, 1, " State");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser3, 1, " Clock");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser4, 1, " Encoder");
+		Subsystems.lcd.println(DriverStationLCD.Line.kUser5, 1, " Back");
 		Subsystems.lcd.println(indexToLCDLine(index_m), 1, "*");
 		Subsystems.lcd.updateLCD();
 	}	

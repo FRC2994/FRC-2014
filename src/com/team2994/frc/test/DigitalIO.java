@@ -1,7 +1,6 @@
 package com.team2994.frc.test;
 
 import com.team2994.frc.Constants;
-import com.team2994.frc.Subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -18,7 +17,7 @@ public class DigitalIO {
 		Constants.RIGHT_ENCODER_A, Constants.RIGHT_ENCODER_B
 	};
 	public static Encoder DEDICATED_INPUT_ENCODER[] = {
-		Subsystems.leftDriveEncoder, Subsystems.rightDriveEncoder
+//		Subsystems.leftDriveEncoder, Subsystems.rightDriveEncoder
 	};
 	public static final int DEDICATED_INPUT_OTHER_CHANNELS[] = {
 		Constants.COMPRESSOR_PRESSURE_SW, Constants.WINCH_SWITCH

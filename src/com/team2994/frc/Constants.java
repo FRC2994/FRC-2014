@@ -33,6 +33,8 @@ public class Constants {
 	public static final int RIGHT_ENCODER_B = 5;        // cable 40
 	public static final int COMPRESSOR_PRESSURE_SW = 8; //
 	public static final int WINCH_SWITCH = 11;          //
+	public static final int LEFT_ENCODER_A_PLYBOY = 13;
+	public static final int LEFT_ENCODER_B_PLYBOY = 14;
 
 	// Relays
 	public static final int COMPRESSOR_SPIKE = 2;		// cable 7
